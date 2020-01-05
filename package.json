@@ -1,0 +1,24 @@
+{
+  "name": "ifttt-wifi-home-presence",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Martodox/ifttt-wifi-home-presence.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Martodox/ifttt-wifi-home-presence/issues"
+  },
+  "homepage": "https://github.com/Martodox/ifttt-wifi-home-presence#readme",
+  "dependencies": {
+    "ifttt-webhooks-channel": "^1.1.0",
+    "ping": "^0.2.2",
+    "tcp-ping": "^0.1.1"
+  }
+}

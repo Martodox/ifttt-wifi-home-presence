@@ -1,0 +1,8 @@
+{
+  "makerKey": "YOURKEY",
+  "triggerDevicesList": [
+    "LOCAL_IP_1",
+    "LOCAL_IP_2",
+    "LOCAL_IP_N"
+  ]
+}
