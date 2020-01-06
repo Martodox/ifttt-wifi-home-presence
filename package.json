@@ -19,6 +19,6 @@
   "dependencies": {
     "ifttt-webhooks-channel": "^1.1.0",
     "ping": "^0.2.2",
-    "tcp-ping": "^0.1.1"
+    "rxjs": "^6.5.4"
   }
 }

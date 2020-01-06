@@ -1,8 +1,11 @@
 {
-  "makerKey": "YOURKEY",
+  "ifttt": {
+    "makerKey": "IFTTT_MAKER_KEY",
+    "offEventName": "offEventName",
+    "onEventName": "onEventName"
+  },
   "triggerDevicesList": [
-    "LOCAL_IP_1",
-    "LOCAL_IP_2",
-    "LOCAL_IP_N"
+    "IP_1",
+    "IP_2"
   ]
 }

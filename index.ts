@@ -1,13 +1,29 @@
-// @ts-ignore
-import * as IFTTT from 'ifttt-webhooks-channel';
-
 import * as config from './config.json';
-
-const ifttt = new IFTTT(config.makerKey);
-
-
-ifttt.post('hallway_lights_off')
-    .then(res => console.log(res))
-    .catch(err => console.error(err))
+import { DevicesDiscovery } from './utils/DevicesDiscovery';
+import { IFTTTTrigger } from './utils/IFTTTTrigger';
 
 
+const trigger = new IFTTTTrigger({
+    offEvent: config.ifttt.offEventName,
+    onEvent: config.ifttt.onEventName,
+    makerKey: config.ifttt.makerKey
+});
+
+const discovery = new DevicesDiscovery(config.triggerDevicesList);
+
+let previousStatus:boolean;
+
+discovery.isTriggerPresent().subscribe(status => {
+
+    if (previousStatus === status.isPresent) {
+        return
+    }
+
+    previousStatus = status.isPresent;
+
+    if (status.isPresent) {
+        trigger.triggerOnEvent()
+    } else {
+        trigger.triggerOffEvent();
+    }
+});
