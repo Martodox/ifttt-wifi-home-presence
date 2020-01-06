@@ -13,17 +13,21 @@ const discovery = new DevicesDiscovery(config.triggerDevicesList);
 
 let previousStatus:boolean;
 
-discovery.isTriggerPresent().subscribe(status => {
+discovery.getProbeObservable().subscribe(status => {
 
-    if (previousStatus === status.isPresent) {
-        return
-    }
+    console.log(status);
 
-    previousStatus = status.isPresent;
 
-    if (status.isPresent) {
-        trigger.triggerOnEvent()
-    } else {
-        trigger.triggerOffEvent();
-    }
+    // if (previousStatus === status.isPresent) {
+    //     return
+    // }
+    //
+    //
+    // previousStatus = status.isPresent;
+    //
+    // if (status.isPresent) {
+    //     trigger.triggerOnEvent()
+    // } else {
+    //     trigger.triggerOffEvent();
+    // }
 });

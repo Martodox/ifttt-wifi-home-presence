@@ -5,8 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "start": "ts-node index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start:remote": "tsc index.ts & pm2 start index.js"
+    "start:dev": "STAY_LOCAL=true tsnd --respawn index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Martodox/ifttt-wifi-home-presence#readme",
   "dependencies": {
+    "@types/node": "^13.1.4",
     "ifttt-webhooks-channel": "^1.1.0",
     "ping": "^0.2.2",
     "rxjs": "^6.5.4",
@@ -26,6 +27,6 @@
     "typescript": "^3.7.4"
   },
   "devDependencies": {
-    "pm2": "^4.2.1"
+    "ts-node-dev": "^1.0.0-pre.44"
   }
 }

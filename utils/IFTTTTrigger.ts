@@ -16,14 +16,22 @@ export class IFTTTTrigger {
         this.iftttSession = new IFTTT(makerKey);
     }
 
+    private async triggerIfttt(event) {
+        if (process.env['STAY_LOCAL']) {
+            console.log('Event not propagated to ifttt');
+            return;
+        }
+        return this.iftttSession.post(event);
+    }
+
     async triggerOnEvent() {
         console.log(new Date(), 'trigger ON');
-        return this.iftttSession.post(this.onEvent);
+        return this.triggerIfttt(this.onEvent);
     }
 
     async triggerOffEvent() {
         console.log(new Date(), 'trigger OFF');
-        return this.iftttSession.post(this.offEvent);
+        return this.triggerIfttt(this.offEvent);
     }
 
 }
