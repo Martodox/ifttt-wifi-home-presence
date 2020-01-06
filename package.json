@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "ts-node index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:remote": "tsc index.ts & pm2 start index.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,11 @@
   "dependencies": {
     "ifttt-webhooks-channel": "^1.1.0",
     "ping": "^0.2.2",
-    "rxjs": "^6.5.4"
+    "rxjs": "^6.5.4",
+    "ts-node": "^8.5.4",
+    "typescript": "^3.7.4"
+  },
+  "devDependencies": {
+    "pm2": "^4.2.1"
   }
 }
