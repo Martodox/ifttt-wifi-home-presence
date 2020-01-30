@@ -1,6 +1,5 @@
 // @ts-ignore
 import * as IFTTT from 'ifttt-webhooks-channel';
-import {of} from "rxjs";
 
 export class IFTTTTrigger {
 

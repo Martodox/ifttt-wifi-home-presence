@@ -1,8 +1,8 @@
 {
   "ifttt": {
     "makerKey": "IFTTT_MAKER_KEY",
-    "offEventName": "offEventName",
-    "onEventName": "onEventName"
+    "offEvent": "offEventName",
+    "onEvent": "onEventName"
   },
   "triggerDevicesList": [
     "IP_1",
