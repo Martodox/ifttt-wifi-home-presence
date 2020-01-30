@@ -1,25 +1,38 @@
 import { DevicesDiscovery, ProbeOutcome } from './DevicesDiscovery';
-import * as clear from 'clear';
+import { Observable } from 'rxjs';
+
+export const homeStates = {
+    initial: 'INITIAL',
+    someOnline: 'SOME_ONLINE',
+    allOffline: 'ALL_OFFLINE'
+}
+
+export interface HomeState {
+    state: string,
+    stateChangedAt: number,
+    timeInThisState?: number
+}
 
 export class DevicePresenceMap {
 
     private availibilityMap;
-    private homeState;
+    private homeState: HomeState;
+    private devicesDiscovery: DevicesDiscovery;
 
     constructor(devicesDiscovery: DevicesDiscovery) {
 
-        devicesDiscovery.getProbeObservable().subscribe(this.handleNewStatus.bind(this));
+        this.devicesDiscovery = devicesDiscovery;
         this.availibilityMap = {};
 
         this.homeState = {
-            state: 'UNFEDINED',
+            state: homeStates.initial,
             stateChangedAt: Date.now(),
             timeInThisState: 0
         }
 
     }
 
-    someOnline(availibilityMap) {
+    private someOnline(availibilityMap) {
         return Object.keys(availibilityMap).reduce((acc, val) => {
             if (acc || availibilityMap[val].isAlive) {
                 return true;
@@ -28,7 +41,7 @@ export class DevicePresenceMap {
         }, false)
     }
 
-    addStatusToMap(status: ProbeOutcome, map) {
+    private addStatusToMap(status: ProbeOutcome, map) {
 
         let mapCopy = Object.assign({}, map);
 
@@ -42,13 +55,11 @@ export class DevicePresenceMap {
         
     }
 
-    handleNewStatus(status: ProbeOutcome) {
+    private handleNewStatus(status: ProbeOutcome) {
         
         this.availibilityMap = this.addStatusToMap(status, this.availibilityMap);
-        
-        clear()
 
-        let currentHomeState = this.someOnline(this.availibilityMap) ? 'SOME_ONLINE' : 'ALL_OFFLINE';
+        let currentHomeState = this.someOnline(this.availibilityMap) ? homeStates.someOnline : homeStates.allOffline;
 
         if (this.homeState.state !== currentHomeState) {
             this.homeState = {
@@ -59,8 +70,16 @@ export class DevicePresenceMap {
 
         this.homeState.timeInThisState = Math.floor((Date.now() - this.homeState.stateChangedAt) / 1000);
         
-        console.log(this.homeState);
+        return this.homeState;
 
+    }
+
+    getHomeStatusObservable():Observable<HomeState> {
+        return new Observable(subscriber => {
+            this.devicesDiscovery.getProbeObservable().subscribe(status => {
+                subscriber.next(this.handleNewStatus(status));
+            });
+        });
     }
     
 
