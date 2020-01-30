@@ -18,31 +18,32 @@ export class DevicesDiscovery {
     }
 
     private createProbeStream(ip: string):Observable<ProbeOutcome> {
-
-        return new Observable((subscriber) => {
+        
+        return new Observable(subscriber => {
 
             let shouldContinue = true;
-
+            
             let probeRecursive = async () => {
                 let isAlive = await ping.promise.probe(ip);
+
                 subscriber.next({isAlive: isAlive.alive, ip, timestamp: Date.now()});
-                if (!shouldContinue) {
-                    return;
-                }
+                
+                setTimeout(() => {
+                    shouldContinue && probeRecursive();
+                }, isAlive.alive ? 1000 : 0);
 
-                probeRecursive();
             };
-
+            
             probeRecursive();
 
-            return function unsubscribe() {
+            return () => {
                 shouldContinue = false;
             };
         });
     }
 
     getProbeObservable():Observable<ProbeOutcome> {
-        let probes = this.IPs.map(ip => this.createProbeStream(ip).pipe(throttle(ev => interval(1500))));
+        let probes = this.IPs.map(ip => this.createProbeStream(ip).pipe(throttle(() => interval(1500))));
         return merge(...probes);
     }
 
