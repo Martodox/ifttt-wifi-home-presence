@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Martodox/ifttt-wifi-home-presence#readme",
   "dependencies": {
     "@types/node": "^13.1.4",
+    "clear": "^0.1.0",
     "ifttt-webhooks-channel": "^1.1.0",
     "ping": "^0.2.2",
     "rxjs": "^6.5.4",
