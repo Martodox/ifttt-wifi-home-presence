@@ -1,15 +1,18 @@
 import * as config from './config.json';
-import { DevicesDiscovery } from './utils/DevicesDiscovery';
-import { DevicePresenceMap } from './utils/DevicePresenceMap';
-import { IFTTTTrigger } from './utils/IFTTTTrigger';
-import { AutomationTrigger } from './utils/AutomationTrigger';
-
+import { DevicesDiscovery } from './classes/DevicesDiscovery';
+import { DevicePresenceMap } from './classes/DevicePresenceMap';
+import { IFTTTTrigger } from './classes/IFTTTTrigger';
+import { AutomationTrigger } from './classes/AutomationTrigger';
+import { isSunUp } from './utils/isSunUp';
 
 const presenceMap = new DevicePresenceMap(
     new DevicesDiscovery(config.triggerDevicesList)
 );
 
-new AutomationTrigger(
+const automationTrigger = new AutomationTrigger(
     new IFTTTTrigger(config.ifttt),
-    presenceMap.getHomeStatusObservable
-)
+    presenceMap.getHomeStatusObservable.bind(presenceMap),
+    () => !isSunUp(config.homeLocation)
+);
+
+automationTrigger.startListening();

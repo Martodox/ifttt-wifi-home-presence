@@ -7,5 +7,9 @@
   "triggerDevicesList": [
     "IP_1",
     "IP_2"
-  ]
+  ],
+  "homeLocation": {
+    "latitude": 50.049683,
+    "longitude": 19.944544
+  }
 }
