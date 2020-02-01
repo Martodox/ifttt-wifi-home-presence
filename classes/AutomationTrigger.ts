@@ -21,20 +21,8 @@ export class AutomationTrigger {
     startListening() {
         this.homeStatusObservable().subscribe(currentStatus => {
 
-            if (!this.triggered) {
             
-                if (currentStatus.state === homeStates.someOnline && currentStatus.timeInThisState > 10) {
-                    this.triggered = true;
-                }
-    
-                if (currentStatus.state === homeStates.allOffline && currentStatus.timeInThisState > 10) {
-                    this.triggered = true;
-                }
-
-            }
-            
-
-            if (this.triggered && this.currentState !== currentStatus.state) {
+            if (currentStatus.timeInThisState > 10 && this.currentState !== currentStatus.state) {
 
                 if (currentStatus.state === homeStates.allOffline) {
                     this.ifttt.triggerOffEvent();
@@ -43,8 +31,6 @@ export class AutomationTrigger {
                 if (currentStatus.state === homeStates.someOnline) {
                     this.ifttt.triggerOnEvent();
                 }
-
-                this.triggered = false;
 
             }
 
