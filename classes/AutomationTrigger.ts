@@ -8,33 +8,36 @@ export class AutomationTrigger {
     private homeStatusObservable: () => Observable<HomeState>;
     private withinOnEventRange: () => boolean;
     private triggered: boolean;
-    private currentState: string;
+    private currentState: HomeState;
 
-    constructor(ifttt: IFTTTTrigger, homeStatusObservable: () => Observable<HomeState>, withinOnEventRange: () => boolean) {
+    constructor(ifttt: IFTTTTrigger, homeStatusObservable: () => Observable<HomeState>,withinOnEventRange: () => boolean) {
         this.ifttt = ifttt;
         this.homeStatusObservable = homeStatusObservable;
         this.withinOnEventRange = withinOnEventRange;
         this.triggered = false;
-        this.currentState = homeStates.initial;
+        this.currentState = {
+            state: homeStates.initial,
+            stateChangedAt: Date.now(),
+            timeInThisState: 0
+        };
     }
 
     startListening() {
-        this.homeStatusObservable().subscribe(currentStatus => {
+        this.homeStatusObservable().subscribe(currentState => {
 
-            
-            if (currentStatus.timeInThisState > 10 && this.currentState !== currentStatus.state) {
+            if (this.currentState.timeInThisState > 10 && this.currentState.state !== currentState.state) {
 
-                if (currentStatus.state === homeStates.allOffline) {
+                if (currentState.state === homeStates.allOffline) {
                     this.ifttt.triggerOffEvent();
                 }
                 
-                if (currentStatus.state === homeStates.someOnline) {
+                if (currentState.state === homeStates.someOnline) {
                     this.ifttt.triggerOnEvent();
                 }
 
             }
 
-            this.currentState = currentStatus.state;
+            this.currentState = currentState;
 
         })
     }
